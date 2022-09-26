@@ -15,7 +15,6 @@ using std::endl;
 5 : 폭탄 파워 증가 아이템
 6 : 벽밀기 아이템
 7 : 투명 아이템
-8 : 웜홀
 */
 
 struct Point
