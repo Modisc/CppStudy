@@ -24,10 +24,19 @@ public:
 
 private:
 	Stage*		stage_[STAGE_MAX_COUNT];
+	int enable_stage_;
+
+public:
+	Stage* GetStage()
+	{
+		return stage_[enable_stage_];
+	}
 
 public:
 	bool Init();
-	void Run();
+	void Run(int stage);
 	void Render();
+
+
 };
 

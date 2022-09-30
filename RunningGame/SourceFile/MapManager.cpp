@@ -1,5 +1,7 @@
 #include "MapManager.h"
 #include "Stage.h"
+#include "ObjectManager.h"
+#include "Player.h"
 
 MapManager* MapManager::map_manager_instance_ = NULL;
 
@@ -47,8 +49,38 @@ bool MapManager::Init()
 	return true;
 }
 
-void MapManager::Run()
+void MapManager::Run(int stage)
 {
+	Player* player = ObjectManager::GetInstance()->GetPlayer();
+	enable_stage_ = stage;
+
+	player->SetPos(stage_[stage]->GetStart().x, stage_[stage]->GetStart().y);
+
+	while (true)
+	{
+		system("cls");
+		
+		if (GetAsyncKeyState('Q') & 0x8000)
+			break;
+		
+		player->Update();
+		stage_[stage]->Render();
+		cout << "Score : " << player->GetScore() << endl;
+
+		if (player->GetComplete())
+		{
+			cout << "게임 클리어!!" << endl;
+			system("pause");
+			break;
+		}
+
+		// 위에 코드대로만 실행하면 화면 전환이 너무 빠르다.
+		// Sleep도 WinAPI에서 제공하는 함수.
+		// Sleep 함수의 인자로 주는 숫자의 ms초만큼 잠시 멈춘다.
+		// 여기선 500ms 씩 멈춘다. 즉 0.5초씩 멈춤.
+		// 1/1000초 단위로 컨트롤 할 수도 있다.
+		Sleep(50);
+	}
 }
 
 void MapManager::Render()

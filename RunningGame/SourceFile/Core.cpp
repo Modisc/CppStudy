@@ -45,20 +45,32 @@ bool Core::Init()
 void Core::Run()
 {
 	//CMapManager::GetInst()->Render();
-	Player* player = ObjectManager::GetInstance()->GetPlayer();
+	
 	while (true)
 	{
-		system("cls");
+		int stage = OutputMenu();
+		if (stage == 4)
+			break;
 
-		player->Update();
+		else if (stage == 0)
+			continue;
 
-		MapManager::GetInstance()->Render();
-
-		// 위에 코드대로만 실행하면 화면 전환이 너무 빠르다.
-		// Sleep도 WinAPI에서 제공하는 함수.
-		// Sleep 함수의 인자로 주는 숫자의 ms초만큼 잠시 멈춘다.
-		// 여기선 500ms 씩 멈춘다. 즉 0.5초씩 멈춤.
-		// 1/1000초 단위로 컨트롤 할 수도 있다.
-		Sleep(100);
+		MapManager::GetInstance()->Run(stage - 1);
 	}
+}
+
+int Core::OutputMenu()
+{
+	system("cls");
+	cout << "1. Stage1" << endl;
+	cout << "2. Stage2" << endl;
+	cout << "3. Stage3" << endl;
+	cout << "4. Exit" << endl;
+	cout << "Input Stage : ";
+	int input = InputInt();
+
+	if (input < 1 || input > 4)
+		return 0;
+
+	return input;
 }
