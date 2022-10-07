@@ -26,8 +26,12 @@ public:
 		SAFE_DELETE(instance);
 	}
 
+private:
+	HANDLE console_;
+
 public:
 	bool Init();
 	void Run();
+	void SetConsolePos(int x, int y);
 };
 

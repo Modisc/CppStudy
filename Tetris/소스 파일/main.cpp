@@ -11,5 +11,6 @@ int main()
 	Core::GetInstance()->Run();
 
 	Core::DestroyInstance();
+
 	return 0;
 }

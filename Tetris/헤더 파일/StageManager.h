@@ -30,6 +30,12 @@ private:
 	class Stage* curr_stage_;
 
 public:
+	class Stage* GetCurrentStage() const
+	{
+		return curr_stage_;
+	}
+
+public:
 	bool Init();
 	void Run();
 };
