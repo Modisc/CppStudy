@@ -12,6 +12,7 @@ protected:
 	Position pos_; // 스테이지 내에서의 도형 위치를 설정하기 위한 변수
 	Position pivot_; // 도형의 기준점(이 기준점을 기준으로 해서 스테이지 내에서 도형을 출력함.) 도형 회전을 위해서도 필요
 	int width_count_; // 도형 기준점이 왼쪽 아래를 잡았으므로, 도형의 가로 길이만 알면 스테이지 범위 밖으로 도형이 나가지 않게 범위를 설정할 수 있다.
+	int dir_;
 
 public:
 	// 2차원 배열은 배열 그 자체를 반환받기가 어렵다. 따라서 아래와 같이
@@ -44,6 +45,7 @@ public:
 
 public:
 	virtual bool Init();
+	virtual void Rotation() = 0;
 
 public:
 	void Render();

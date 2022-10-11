@@ -28,10 +28,15 @@ public:
 
 private:
 	HANDLE console_;
+	bool loop_;
 
 public:
 	bool Init();
 	void Run();
 	void SetConsolePos(int x, int y);
+	void End()
+	{
+		loop_ = false;
+	}
 };
 

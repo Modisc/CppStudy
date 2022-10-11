@@ -5,6 +5,7 @@
 
 Shape::Shape()
 {
+    dir_ = static_cast<int>(RotationDir::up);
     width_count_ = 0;
     for (int i = 0; i < 4; i++)
     {
@@ -46,15 +47,22 @@ void Shape::Render()
         y = pos_.y - (3 - i);
         if (y < 0) continue;
 
-        Core::GetInstance()->SetConsolePos(pos_.x, y);
-
         for (int j = 0; j < 4; j++)
         {
             if (pos_.x + j >= STAGE_WIDTH)
                 continue;
 
             if (base_shape_[i][j] == '0')
-                cout << "★";
+            {
+                // 도형이 네모일 때는 1차 반복문에서 바로 커서를 설정해도 상관 없었지만
+                // 도형을 추가했을 때는 현재 도형을 그리면서 빈 여백을 출력하지 않기 때문에
+                // 커서를 자동으로 이동하도록 해야한다.
+                // 그렇지 않으면 ㄱ 과 같은 모양을 그릴 때 여백 부분엔 아무 것도 출력하지 않으므로
+                // 커서가 여백 부분에서 머물다가 도형을 그려주게 된다.
+                Core::GetInstance()->SetConsolePos(pos_.x + j, y);
+                cout << "☆";
+            }
+                
         }
         cout << endl;
     }
@@ -68,14 +76,18 @@ void Shape::RenderNext()
         y = pos_.y - (3 - i);
         if (y < 0) continue;
 
-        Core::GetInstance()->SetConsolePos(pos_.x, y);
-
         for (int j = 0; j < 4; j++)
         {
             if (base_shape_[i][j] == '0')
+            {
+                // 도형이 네모일 때는 1차 반복문에서 바로 커서를 설정해도 상관 없었지만
+                // 도형을 추가했을 때는 현재 도형을 그리면서 빈 여백을 출력하지 않기 때문에
+                // 커서를 자동으로 이동하도록 해야한다.
+                // 그렇지 않으면 ㄱ 과 같은 모양을 그릴 때 여백 부분엔 아무 것도 출력하지 않으므로
+                // 커서가 여백 부분에서 머물다가 도형을 그려주게 된다.
+                Core::GetInstance()->SetConsolePos(pos_.x + j, y);
                 cout << "★";
-            else
-                cout << "  ";
+            }
         }
         cout << endl;
     }
@@ -96,6 +108,23 @@ bool Shape::MoveDown()
                 // 내 블럭 가장 아래 바로 밑칸을 조사해야 함.
                 if (stage->CheckBlock(pos_.x + j, pos_.y - (2 - i)))
                 {
+                    // 바닥에 닿은 후 현재 도형의 블럭인 부분이 하나라도 좌표가 0보다 작다면 종료한다.
+                    for (int k = 0; k < 4; ++k)
+                    {
+                        for (int m = 0; m < 4; ++m)
+                        {
+                            if (base_shape_[k][m] == '0')
+                            {
+                                if (pos_.y - (3 - k) < 0)
+                                {
+                                    Core::GetInstance()->End();
+                                    Core::GetInstance()->SetConsolePos(0, 17);
+                                    cout << "\t게임 종료!!!" << endl;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                     return true;
                 }
             }

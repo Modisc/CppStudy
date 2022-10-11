@@ -4,7 +4,7 @@
 
 Core* Core::instance = NULL;
 
-Core::Core()
+Core::Core() : loop_(true)
 {
 	srand((unsigned int)time(NULL));
 }
@@ -33,7 +33,7 @@ bool Core::Init()
 
 void Core::Run()
 {
-	while (true)
+	while (loop_)
 	{
 		// ShapeManager::GetInstance()->Render(); 까지 코드가 돌고나면
 		// 현재 콘솔창의 커서 위치가 (0, 0)이 아니라

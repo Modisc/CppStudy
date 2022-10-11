@@ -1,5 +1,11 @@
 #include "ShapeManager.h"
-#include "Rectangle.h"
+#include "ShapeRectangle.h"
+#include "ShapeGun.h"
+#include "ShapeLine.h"
+#include "ShapeReverseGun.h"
+#include "ShapeS.h"
+#include "ShapeT.h"
+#include "ShapeZ.h"
 #include "StageManager.h"
 #include "Stage.h"
 
@@ -8,7 +14,7 @@ ShapeManager* ShapeManager::instance = NULL;
 ShapeManager::ShapeManager():curr_shape_(NULL), next_shape_(NULL)
 {
 	curr_shape_ = CreateRandomShape();
-	next_shape_ = CreateRandomShape();
+	next_shape_ = CreateRandomShape();\
 	speed_ = 0;
 }
 
@@ -66,6 +72,11 @@ void ShapeManager::Update()
 	{
 		curr_shape_->MoveRight();
 	}
+
+	if (GetAsyncKeyState('W') & 0x8000)
+	{
+		curr_shape_->Rotation();
+	}
 		
 }
 
@@ -100,8 +111,27 @@ Shape* ShapeManager::CreateShape(ShapeType type)
 	switch (type)
 	{
 	case ShapeType::rect:
-		shape = new class Rectangle;
+		shape = new class ShapeRectangle;
 		break;
+	case ShapeType::gun:
+		shape = new class ShapeGun;
+		break;
+	case ShapeType::line:
+		shape = new class ShapeLine;
+		break;
+	case ShapeType::reverse_gun:
+		shape = new class ShapeReverseGun;
+		break;
+	case ShapeType::s:
+		shape = new class ShapeS;
+		break;
+	case ShapeType::t:
+		shape = new class ShapeT;
+		break;
+	case ShapeType::z:
+		shape = new class ShapeZ;
+		break;
+
 	}
 
 	if (!shape->Init())

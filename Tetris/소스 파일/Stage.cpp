@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "Shape.h"
 
-Stage::Stage() : speed_(1)
+Stage::Stage() : speed_(3)
 {
 }
 
@@ -17,7 +17,36 @@ void Stage::AddBlock(Shape* shape, const Position& pos)
 		for (int j = 0; j < 4; ++j)
 		{
 			if (shape->GetBlock(j, i) == '0')
+			{
 				stage_arr_[pos.y - (3 - i)][pos.x + j] = '0';
+				
+				// 현재 줄을 체크한다.
+				bool line = true;
+				for (int k = 0; k < STAGE_WIDTH; ++k)
+				{
+					if (stage_arr_[pos.y - (3 - i)][k] != '0')
+					{
+						line = false;
+						break;
+					}
+						
+				}
+
+				// 현재 블럭이 채워진 줄이 모두 블럭으로 채워져 있다면 해당 줄을 지워준다
+				// 위의 블럭들을 모두 한칸씩 내려준다
+				if (line)
+				{
+					for (int k = pos.y - (3 - i); k > 0; k--)
+					{
+						for (int m = 0; m < STAGE_WIDTH; ++m)
+						{
+							stage_arr_[k][m] = stage_arr_[k - 1][m];
+						}
+
+					}
+				}
+			}
+				
 		}
 	}
 }
